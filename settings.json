@@ -1,0 +1,234 @@
+{
+    //======== Font & Text =========
+    "editor.fontFamily": "MD IO Trial, Rec Mono Linear, Cascadia Code, Liga Droid Sans Mono",
+    "editor.fontLigatures": true, //-> ligatures like '=>', '==='
+    "editor.fontWeight": 500,
+    "editor.fontSize": 16,
+    "editor.lineHeight": 1.6, //ratio of font size
+    //terminal
+    "terminal.integrated.fontSize": 16,
+    "terminal.integrated.fontFamily": "MD IO Trial, IBM Plex Mono",
+    //UI
+    "custom-ui-style.font.sansSerif": "MD IO Trial",
+
+    //========= Color theme =========
+
+    //Autosave
+    "files.autoSave": "afterDelay",
+    "files.autoSaveDelay": 1000,
+
+    //========== Workbench ==========
+    "workbench.editor.tabActionLocation": "left",
+    "workbench.fontAliasing": "antialiased",
+    "workbench.list.smoothScrolling": true,
+    "workbench.sideBar.location": "right",
+    "workbench.tree.indent": 32,
+    "workbench.activityBar.location": "top",
+    "breadcrumbs.enabled": true,
+    "breadcrumbs.icons": false,
+    "explorer.compactFolders": false,
+
+    //========== Editor ==========
+    "editor.folding": true,
+    "editor.cursorStyle": "line-thin",
+    "editor.guides.bracketPairs": false,
+    "editor.cursorSmoothCaretAnimation": "on",
+    "editor.smoothScrolling": true,
+    "editor.lineNumbers": "relative",
+    "editor.minimap.enabled": false,
+    "editor.tabSize": 2,
+    "editor.indentSize": "tabSize",
+    "editor.wordWrap": "on",
+    "editor.wordWrapColumn": 80,
+    "editor.inlayHints.enabled": "off",
+    "editor.defaultFormatter": "jinxdash.prettier-rust",
+    "editor.renderWhitespace": "boundary",
+    "editor.minimap.showSlider": "always",
+    "editor.showFoldingControls": "always",
+
+    //======== Formatting =========
+    "editor.formatOnPaste": true,
+    "editor.formatOnSave": true,
+    "editor.formatOnType": true,
+    "editor.quickSuggestionsDelay": 10,
+    "editor.quickSuggestions": {
+        "other": "on",
+        "comments": "off",
+        "strings": "off"
+    },
+
+    //===== Language-specific setups =====
+
+    "[rust]": {
+        "editor.defaultFormatter": "rust-lang.rust-analyzer",
+        "editor.formatOnSave": true
+    },
+    "[fsharp]": {
+        "editor.defaultFormatter": "Ionide.Ionide-fsharp"
+    },
+    "[jsonc]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[markdown]": {
+        "editor.defaultFormatter": "yzhang.markdown-all-in-one"
+    },
+
+    //===== Extension configs ======
+    //WARN:
+    //ASK:
+    //TODO:
+    //NOTE:
+
+    "errorLens.delay": 1000,
+    "better-comments.highlightPlainText": false,
+    "better-comments.tags": [
+        {
+            "tag": "warn",
+            "color": "#ff719a",
+            "strikethrough": false,
+            "underline": false,
+            "backgroundColor": "transparent",
+            "bold": false,
+            "italic": false
+        },
+        {
+            "tag": "ask",
+            "color": "#7bfbec",
+            "strikethrough": false,
+            "underline": false,
+            "backgroundColor": "transparent",
+            "bold": false,
+            "italic": false
+        },
+        {
+            "tag": "//",
+            "color": "#474747",
+            "strikethrough": true,
+            "underline": false,
+            "backgroundColor": "transparent",
+            "bold": false,
+            "italic": false
+        },
+        {
+            "tag": "todo",
+            "color": "#ff9c31",
+            "strikethrough": false,
+            "underline": false,
+            "backgroundColor": "transparent",
+            "bold": false,
+            "italic": false
+        },
+        {
+            "tag": "note",
+            "color": "#91fe6a",
+            "strikethrough": false,
+            "underline": false,
+            "backgroundColor": "transparent",
+            "bold": false,
+            "italic": false
+        }
+    ],
+    "vim.normalModeKeyBindings": [
+        {
+            "before": ["J"],
+            "commands": ["editor.action.moveLinesDownAction"]
+        },
+        {
+            "before": ["K"],
+            "commands": ["editor.action.moveLinesUpAction"]
+        }
+    ],
+    "vim.visualModeKeyBindings": [
+        {
+            "before": ["J"],
+            "commands": ["editor.action.moveLinesDownAction"]
+        },
+        {
+            "before": ["K"],
+            "commands": ["editor.action.moveLinesUpAction"]
+        }
+    ],
+    "insertDateString.formatDate": "YY/MM/DD",
+
+    //----Background-----
+    "background.enabled": true,
+
+    //-----Settings to reduce memory usage-----
+    "files.watcherExclude": {
+        "**/.git/objects/**": true,
+        "**/.git/subtree-cache/**": true,
+        "**/node_modules/**": true,
+        "**/env/**": true,
+        "**/venv/**": true,
+        "env-*": true
+    },
+
+    //Remove clutter from the file explorer
+    "files.exclude": {
+        "**/.git": true,
+        "**/.DS_Store": true,
+        "**/.vscode": true,
+        "**/__pycache__": true,
+        "**/.pytest_cache": true,
+        "**/node_modules": true,
+        "venv": true,
+        "*.sublime-*": true,
+        "env*": true
+    },
+    "workbench.iconTheme": "catppuccin-macchiato",
+    "workbench.colorCustomizations": {
+        "editorBracketHighlight.foreground1": "#24837B",
+        "editorBracketHighlight.foreground2": "#AD8301",
+        "editorBracketHighlight.foreground3": "#66800B",
+        "editorBracketHighlight.foreground4": "#BC5215",
+        "editorBracketHighlight.foreground5": "#205EA6",
+        "editor.lineHighlightBackground": "#1073cf2d",
+        "editor.lineHighlightBorder": "#9fced11f",
+        "terminal.background": "#00000000"
+    },
+    "editor.tokenColorCustomizations": {
+        "textMateRules": [
+            {
+                "scope": "comment",
+                "settings": {
+                    "foreground": "#9c9c9c"
+                }
+            }
+        ]
+    },
+    "diffEditor.wordWrap": "off",
+    "editor.guides.indentation": false,
+    "window.systemColorTheme": "dark",
+    "window.autoDetectColorScheme": false,
+    "workbench.preferredLightColorTheme": "Monokai Night",
+    "blockman.n04Sub01ColorComboPresetForDarkTheme": "Classic Dark 1 (Super gradients)",
+    "blockman.n04Sub02ColorComboPresetForLightTheme": "Classic Light (Super gradients)",
+    "blockman.n04ColorComboPreset": "Classic Light (Gradients)",
+    "tabnine.experimentalAutoImports": true,
+    "tabnine.codeLensEnabled": false,
+    "todo-tree.regex.regex": "(//|#|<!--|;|/\\*|^|^[ \\t]*(-|\\d+.))\\s*($TAGS)|todo!",
+    "todo-tree.regex.regexCaseSensitive": false,
+
+    "prettier.tabWidth": 4,
+    "workbench.startupEditor": "none",
+    "editor.inlineSuggest.enabled": false,
+    "svelte.enable-ts-plugin": true,
+    "workbench.preferredDarkColorTheme": "ktrz-monokai",
+    "liveServer.settings.donotShowInfoMsg": true,
+    "dart.flutterSdkPath": "/Users/kietnguyen/development/flutter",
+    "dart.flutterHotReloadOnSave": "all",
+    "[dart]": {
+        "editor.formatOnSave": true,
+        "editor.formatOnType": true,
+        "editor.rulers": [80],
+        "editor.selectionHighlight": false,
+        "editor.tabCompletion": "onlySnippets",
+        "editor.wordBasedSuggestions": "off"
+    },
+    "blockman.n03MaxDepth": 20,
+    "chat.disableAIFeatures": false,
+    "console-ninja.featureSet": "Community",
+    "workbench.colorTheme": "ktrz-monokai",
+    "terminal.integrated.gpuAcceleration": "off",
+    "window.titleBarStyle": "custom"
+}
