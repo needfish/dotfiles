@@ -20,49 +20,81 @@ require("lazy").setup({
     },
   },
 
-  -- Fuzzy finder & file browser
+  -- Fuzzy finder, file explorer & QoL (snacks.nvim)
   {
-    "nvim-telescope/telescope.nvim",
-    cmd = "Telescope",
-    keys = {
-      { "<leader>ff", "<cmd>Telescope find_files<CR>", desc = "Find files" },
-      { "<leader>fg", "<cmd>Telescope live_grep<CR>", desc = "Live grep" },
-      { "<leader>fb", "<cmd>Telescope buffers<CR>", desc = "Find buffers" },
-      { "<leader>fh", "<cmd>Telescope help_tags<CR>", desc = "Help tags" },
-      { "<leader>e", "<cmd>Telescope file_browser<CR>", desc = "Browse files" },
+    "folke/snacks.nvim",
+    priority = 1000,
+    lazy = false,
+    ---@type snacks.Config
+    opts = {
+      bigfile = { enabled = true },
+      dashboard = {
+        enabled = true,
+        preset = {
+          header = [[
+
+ ⣇⣿⠘⣿⣿⣿⡿⡿⣟⣟⢟⢟⢝⠵⡝⣿⡿⢂⣼⣿⣷⣌⠩⡫⡻⣝⠹⢿⣿⣷
+ ⡆⣿⣆⠱⣝⡵⣝⢅⠙⣿⢕⢕⢕⢕⢝⣥⢒⠅⣿⣿⣿⡿⣳⣌⠪⡪⣡⢑⢝⣇
+ ⡆⣿⣿⣦⠹⣳⣳⣕⢅⠈⢗⢕⢕⢕⢕⢕⢈⢆⠟⠋⠉⠁⠉⠉⠁⠈⠼⢐⢕⢽
+ ⡗⢰⣶⣶⣦⣝⢝⢕⢕⠅⡆⢕⢕⢕⢕⢕⣴⠏⣠⡶⠛⡉⡉⡛⢶⣦⡀⠐⣕⢕
+ ⡝⡄⢻⢟⣿⣿⣷⣕⣕⣅⣿⣔⣕⣵⣵⣿⣿⢠⣿⢠⣮⡈⣌⠨⠅⠹⣷⡀⢱⢕
+ ⡝⡵⠟⠈⢀⣀⣀⡀⠉⢿⣿⣿⣿⣿⣿⣿⣿⣼⣿⢈⡋⠴⢿⡟⣡⡇⣿⡇⡀⢕
+ ⡝⠁⣠⣾⠟⡉⡉⡉⠻⣦⣻⣿⣿⣿⣿⣿⣿⣿⣿⣧⠸⣿⣦⣥⣿⡇⡿⣰⢗⢄
+ ⠁⢰⣿⡏⣴⣌⠈⣌⠡⠈⢻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣬⣉⣉⣁⣄⢖⢕⢕⢕
+ ⡀⢻⣿⡇⢙⠁⠴⢿⡟⣡⡆⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣵⣵⣿
+ ⡻⣄⣻⣿⣌⠘⢿⣷⣥⣿⠇⣿⣿⣿⣿⣿⣿⠛⠻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+ ⣷⢄⠻⣿⣟⠿⠦⠍⠉⣡⣾⣿⣿⣿⣿⣿⣿⢸⣿⣦⠙⣿⣿⣿⣿⣿⣿⣿⣿⠟
+ ⡕⡑⣑⣈⣻⢗⢟⢞⢝⣻⣿⣿⣿⣿⣿⣿⣿⠸⣿⠿⠃⣿⣿⣿⣿⣿⣿⡿⠁⣠
+ ⡝⡵⡈⢟⢕⢕⢕⢕⣵⣿⣿⣿⣿⣿⣿⣿⣿⣿⣶⣶⣿⣿⣿⣿⣿⠿⠋⣀⣈⠙
+ ⡝⡵⡕⡀⠑⠳⠿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⠛⢉⡠⡲⡫⡪⡪⡣
+
+          ]],
+        },
+      },
+      explorer = { enabled = true },
+      indent = { enabled = true },
+      input = { enabled = true },
+      picker = { enabled = true },
+      notifier = { enabled = true },
+      quickfile = { enabled = true },
+      scope = { enabled = true },
+      scroll = { enabled = true },
+      session = { enabled = true },
+      dim = { enabled = true },
+      zen = { enabled = true },
+      statuscolumn = { enabled = true },
+      words = { enabled = true },
     },
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
-      "nvim-telescope/telescope-file-browser.nvim",
-    },
-    config = function()
-      local telescope = require("telescope")
-      telescope.setup({
-        extensions = {
-          fzf = {
-            fuzzy = true,
-            override_generic_sorter = true,
-            override_file_sorter = true,
-            case_mode = "smart_case",
-          },
-          file_browser = {
-            hijack_netrw = true,
+    picker = {
+      sources = {
+        explorer = {
+          layout = {
+            preset = "telescope",
           },
         },
-      })
-      telescope.load_extension("fzf")
-      telescope.load_extension("file_browser")
-    end,
+      },
+    },
+    keys = {
+      { "<leader>ff", function() Snacks.picker.files() end,                                 desc = "Find files" },
+      { "<leader>fg", function() Snacks.picker.grep() end,                                  desc = "Live grep" },
+      { "<leader>fb", function() Snacks.picker.buffers() end,                               desc = "Find buffers" },
+      { "<leader>fh", function() Snacks.picker.help() end,                                  desc = "Help tags" },
+      { "<leader>sd", function() Snacks.picker.diagnostics() end,                           desc = "Workspace diagnostics" },
+      { "<leader>sD", function() Snacks.picker.diagnostics({ filter = { bufnr = 0 } }) end, desc = "Buffer diagnostics" },
+      { "<leader>e",  function() Snacks.picker.files() end,                                 desc = "Find files" },
+      { "<leader>z",  function() Snacks.zen() end,                                          desc = "Toggle zen mode" },
+      { "<leader>n",  function() Snacks.dim() end,                                          desc = "Toggle dim" },
+    },
   },
 
   -- Treesitter (better syntax highlighting)
   {
     "nvim-treesitter/nvim-treesitter",
-    build = ":TSUpdate",
+    build = ":TSInstallSync all",
+    lazy = false,
     config = function()
       require("nvim-treesitter.config").setup({
-        ensure_installed = { "lua", "vim", "vimdoc", "query", "markdown", "markdown_inline" },
+        ensure_installed = { "lua", "vim", "vimdoc", "query", "markdown", "markdown_inline", "python", "javascript", "typescript", "rust", "bash", "json", "yaml", "astro" },
         auto_install = true,
         highlight = { enable = true },
         indent = { enable = true },
@@ -100,8 +132,8 @@ require("lazy").setup({
               ["<C-Space>"] = cmp.mapping.complete(),
               ["<C-e>"] = cmp.mapping.abort(),
               ["<CR>"] = cmp.mapping.confirm({ select = true }),
-              ["<Tab>"] = cmp.mapping.select_next_item(),
-              ["<S-Tab>"] = cmp.mapping.select_prev_item(),
+              ["<C-n>"] = cmp.mapping.select_next_item(),
+              ["<C-p>"] = cmp.mapping.select_prev_item(),
             }),
             sources = cmp.config.sources({
               { name = "nvim_lsp" },
@@ -117,9 +149,8 @@ require("lazy").setup({
     config = function()
       require("mason").setup()
       require("mason-lspconfig").setup({
-        ensure_installed = { "lua_ls", "ts_ls", "pyright", "rust_analyzer" },
-        automatic_installation = true,
-        handlers = { function(_) end },
+        ensure_installed = { "lua_ls", "ts_ls", "pyright", "rust_analyzer", "astro" },
+        automatic_enable = true,
       })
 
       local capabilities = require("cmp_nvim_lsp").default_capabilities()
@@ -201,13 +232,10 @@ require("lazy").setup({
         },
       })
 
-      vim.lsp.enable("lua_ls")
-      vim.lsp.enable("ts_ls")
-      vim.lsp.enable("pyright")
-      vim.lsp.enable("rust_analyzer")
+      -- Note: automatic_enable above calls vim.lsp.enable() for each installed server
 
       vim.diagnostic.config({
-        virtual_text = true,
+        virtual_text = false, -- tiny-inline-diagnostic handles this
         signs = true,
         update_in_insert = false,
         severity_sort = true,
@@ -229,21 +257,43 @@ require("lazy").setup({
     dependencies = { "nvim-lua/plenary.nvim" },
     opts = {},
     keys = {
-      { "]t", function() require("todo-comments").jump_next() end, desc = "Next todo comment" },
-      { "[t", function() require("todo-comments").jump_prev() end, desc = "Prev todo comment" },
-      { "<leader>st", "<cmd>TodoTelescope<CR>", desc = "Search todo comments" },
+      { "]t",         function() require("todo-comments").jump_next() end,     desc = "Next todo comment" },
+      { "[t",         function() require("todo-comments").jump_prev() end,     desc = "Prev todo comment" },
+      { "<leader>st", function() require("snacks").picker.todo_comments() end, desc = "Search todo comments" },
     },
   },
 
-  -- Indentation guides
+  -- Linter (runs external linters like ruff, eslint, shellcheck)
   {
-    "lukas-reineke/indent-blankline.nvim",
-    main = "ibl",
-    event = "VeryLazy",
-    opts = {
-      indent = { char = "|" },
-      scope = { show_start = false, show_end = false },
-    },
+    "mfussenegger/nvim-lint",
+    event = { "BufReadPost", "BufNewFile" },
+    config = function()
+      local lint = require("lint")
+
+      -- Map filetypes to linters
+      lint.linters_by_ft = {
+        python = { "ruff" },
+        javascript = { "eslint" },
+        typescript = { "eslint" },
+        javascriptreact = { "eslint" },
+        typescriptreact = { "eslint" },
+        sh = { "shellcheck" },
+        lua = { "selene" },
+      }
+
+      -- Auto-lint on save
+      vim.api.nvim_create_autocmd("BufWritePost", {
+        group = vim.api.nvim_create_augroup("lint", { clear = true }),
+        callback = function()
+          lint.try_lint()
+        end,
+      })
+
+      -- Keymap to manually lint
+      vim.keymap.set("n", "<leader>l", function()
+        lint.try_lint()
+      end, { desc = "Lint buffer" })
+    end,
   },
 
   -- Auto-format on save
@@ -265,6 +315,19 @@ require("lazy").setup({
         timeout_ms = 500,
         lsp_format = "fallback",
       },
+      formatters_by_ft = {
+        lua = { "stylua" },
+        python = { "ruff_format", "ruff_organize_imports" },
+        javascript = { "prettierd", "prettier", stop_after_first = true },
+        typescript = { "prettierd", "prettier", stop_after_first = true },
+        javascriptreact = { "prettierd", "prettier", stop_after_first = true },
+        typescriptreact = { "prettierd", "prettier", stop_after_first = true },
+        json = { "prettier" },
+        yaml = { "prettier" },
+        markdown = { "prettier" },
+        rust = { "rustfmt", lsp_format = "fallback" },
+        sh = { "shfmt" },
+      },
     },
   },
 
@@ -275,6 +338,47 @@ require("lazy").setup({
     opts = {},
     keys = {
       { "<leader>", desc = "WhichKey prefix" },
+    },
+  },
+
+  -- Code outline sidebar
+  {
+    "stevearc/aerial.nvim",
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+      "nvim-tree/nvim-web-devicons",
+    },
+    cmd = { "AerialToggle", "AerialOpen", "AerialNavToggle" },
+    opts = {
+      backends = { "treesitter", "lsp", "markdown" },
+      open_automatic = true,
+      show_guides = true,
+      layout = {
+        max_width = { 40, 0.2 },
+        default_direction = "prefer_left",
+      },
+      highlight_on_hover = true,
+      filter_kind = {
+        "Class",
+        "Constructor",
+        "Enum",
+        "Function",
+        "Interface",
+        "Method",
+        "Module",
+        "Namespace",
+        "Struct",
+      },
+    },
+    keys = {
+      { "<leader>a", "<cmd>AerialToggle!<CR>", desc = "Code outline" },
+      {
+        "<leader>as",
+        function() require("aerial.snacks").pick_symbol() end,
+        desc = "Search symbols (Snacks)"
+      },
+      { "[e",        "<cmd>AerialPrev<CR>",    desc = "Previous symbol" },
+      { "]e",        "<cmd>AerialNext<CR>",    desc = "Next symbol" },
     },
   },
 
@@ -309,6 +413,18 @@ require("lazy").setup({
     opts = {},
   },
 
+  -- Inline diagnostics (replaces virtual_text)
+  {
+    "rachartier/tiny-inline-diagnostic.nvim",
+    event = "VeryLazy",
+    priority = 1000,
+    config = function()
+      require("tiny-inline-diagnostic").setup({
+        preset = "classic",
+      })
+    end,
+  },
+
   -- Tab bar at top
   {
     "akinsho/bufferline.nvim",
@@ -337,13 +453,7 @@ require("lazy").setup({
     },
   },
 
-  -- Error Lens (inline diagnostics at end of line)
-  {
-    "v1nh1shungry/error-lens.nvim",
-    opts = {},
-  },
-
-  }, {
+}, {
   install = {
     colorscheme = { "ayu" },
   },

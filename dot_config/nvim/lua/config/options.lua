@@ -50,6 +50,23 @@ opt.timeoutlen = 300
 -- Better completion
 opt.completeopt = "menu,menuone,noselect"
 
--- Netrw (disabled -- telescope-file-browser replaces it)
+-- Mouse support (scroll, resize, select with mouse)
+opt.mouse = "a"
+
+-- Show tabs and trailing whitespace
+opt.list = true
+opt.listchars = { tab = "> ", trail = "-", precedes = "<", extends = ">" }
+
+-- Don't wrap long lines by default
+opt.wrap = false
+opt.breakindent = true
+
+-- No ~ characters on empty lines (cleaner look)
+opt.fillchars:append({ eob = " " })
+
+-- Hide mode text (already shown in lualine)
+opt.showmode = false
+
+-- Netrw (disabled -- snacks.explorer replaces it)
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1

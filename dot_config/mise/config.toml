@@ -1,0 +1,16 @@
+[tools]
+go = "latest"
+node = "24"
+pnpm = "11.8"
+python = "3.14"
+lua = "latest"
+gh = "latest"
+terraform = "latest"
+ripgrep = "latest"
+chezmoi = "latest"
+cmake = "latest"
+tmux = "latest"
+neovim = "0.12.3"
+
+[settings]
+python.uv_venv_auto = true

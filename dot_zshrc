@@ -1,0 +1,59 @@
+# Volta lines removed -- migrating to mise
+
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
+typeset -U path PATH
+path=($path)
+export PATH
+
+. "$HOME/.local/bin/env"
+alias python="uv run python"
+alias la="ls -a"
+alias nv="nvim"
+
+
+# Starship prompt
+eval "$(starship init zsh)"
+
+# Fix Delete key (terminfo[kdch1] is empty inside tmux, so hardcode fallback)
+bindkey "${terminfo[kdch1]:-\e[3~}" delete-char
+
+eval "$(/Users/kitan/.local/bin/mise activate zsh)" # added by https://mise.run/zsh
+
+# Automatic Python venv via mise + uv
+# Creates .venv on cd into projects with pyproject.toml or requirements.txt
+# See: https://whitfin.io/blog/automatic-python-environments-with-mise-uv/
+_setup_python_env () {
+    # initialize virtual env for python projects with manifest files
+    if [[ (-f pyproject.toml || -f requirements.txt) && ! -d .venv ]]; then
+        uv venv
+    fi
+
+    # initialize lockfile for mise if missing
+    if [[ -d .venv && ! -f uv.lock ]]; then
+        printf 'version = 1\nrequires-python = ">=3.10"\n' > uv.lock
+    fi
+
+    # evaluate the mise hook if the env is not detected in the path
+    if [[ -f uv.lock && ":$PATH:" != *":$PWD/.venv/bin:"* ]]; then
+        eval "$(mise hook-env -f)"
+    fi
+}
+precmd_functions+=("_setup_python_env")
+
+# Pre-exec hook: create .venv on-the-fly when running python/pip without one
+_ensure_venv_preexec() {
+    # If .venv already exists, nothing to do
+    [[ -d .venv ]] && return
+
+    # Only act when the command starts with python or pip
+    case "$1" in
+        python*|pip*)
+            if [[ -f pyproject.toml || -f requirements.txt ]]; then
+                echo "-> Creating .venv with uv before $1..."
+                uv venv
+            fi
+            ;;
+    esac
+}
+preexec_functions+=("_ensure_venv_preexec")

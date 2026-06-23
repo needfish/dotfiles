@@ -7,6 +7,9 @@ map("i", "jk", "<Esc>", { desc = "Escape insert mode" })
 -- Clear search highlights (double-tap Esc to avoid interfering with other mappings)
 map("n", "<Esc><Esc>", "<cmd>nohlsearch<CR>", { desc = "Clear search highlights (double-tap)" })
 
+-- Toggle search highlight on/off
+map("n", "<leader>/", "<cmd>set hlsearch!<CR>", { desc = "Toggle search highlights" })
+
 -- Window navigation
 map("n", "<C-h>", "<C-w>h", { desc = "Go to left window" })
 map("n", "<C-j>", "<C-w>j", { desc = "Go to lower window" })
@@ -37,6 +40,8 @@ map("n", "<leader>q", "<cmd>q<CR>", { desc = "Quit" })
 -- Buffer navigation (tab-like)
 map("n", "[b", "<cmd>BufferLineCyclePrev<CR>", { desc = "Previous buffer" })
 map("n", "]b", "<cmd>BufferLineCycleNext<CR>", { desc = "Next buffer" })
+-- NOTE: <S-h>/<S-l> override Vim's H/L (top/bottom of screen).
+-- Remove these two lines if you use H/L for screen navigation.
 map("n", "<S-h>", "<cmd>BufferLineCyclePrev<CR>", { desc = "Previous buffer" })
 map("n", "<S-l>", "<cmd>BufferLineCycleNext<CR>", { desc = "Next buffer" })
 
