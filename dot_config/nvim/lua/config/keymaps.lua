@@ -34,7 +34,7 @@ map("v", "K", ":m '<-2<CR>gv=gv", { desc = "Move line up" })
 map("x", "p", [["_dP]], { desc = "Paste without overwriting yank" })
 
 -- Quick save
-map("n", "<leader>w", "<cmd>w<CR>", { desc = "Save file" })
+map("n", "<leader>w", ":w ", { desc = "Save file (type name to save as)" })
 map("n", "<leader>q", "<cmd>q<CR>", { desc = "Quit" })
 
 -- Buffer navigation (tab-like)
@@ -45,5 +45,63 @@ map("n", "]b", "<cmd>BufferLineCycleNext<CR>", { desc = "Next buffer" })
 map("n", "<S-h>", "<cmd>BufferLineCyclePrev<CR>", { desc = "Previous buffer" })
 map("n", "<S-l>", "<cmd>BufferLineCycleNext<CR>", { desc = "Next buffer" })
 
+-- Copy relative filepath to clipboard
+map("n", "<leader>y", function()
+  vim.fn.setreg("+", vim.fn.expand("%"))
+end, { desc = "Copy relative path" })
+
 -- Escape terminal mode with Esc
 map("t", "<Esc>", "<C-\\><C-n>", { desc = "Escape terminal mode" })
+
+-- Quick terminal (Snacks) -- toggle a persistent shell in a bottom split
+map("n", "<leader>t", "", { desc = "+terminal" })
+map("n", "<leader>tt", function() Snacks.terminal.toggle() end, { desc = "Toggle terminal" })
+
+-- Run current file in a floating terminal
+map("n", "<leader>tr", function()
+  local ft = vim.bo.filetype
+  local file = vim.fn.expand("%:p")
+  local cmd
+  if ft == "python" then
+    cmd = "python " .. file
+  elseif ft == "lua" then
+    cmd = "lua " .. file
+  elseif ft == "javascript" or ft == "typescript" then
+    cmd = "node " .. file
+  elseif ft == "rust" then
+    cmd = "cargo run"
+  elseif ft == "sh" then
+    cmd = "bash " .. file
+  else
+    cmd = file  -- try raw path (requires shebang)
+  end
+  Snacks.terminal.toggle(cmd, { interactive = false })
+end, { desc = "Run current file" })
+
+-- Floating shell (for one-off commands)
+map("n", "<leader>tf", function()
+  Snacks.terminal.toggle(vim.o.shell, { win = { style = "terminal" } })
+end, { desc = "Floating terminal" })
+
+-- Vertical split terminal
+map("n", "<leader>tv", function()
+  Snacks.terminal.toggle(nil, { win = { position = "right" } })
+end, { desc = "Vertical terminal" })
+
+-- Run test suite
+map("n", "<leader>tn", function()
+  local ft = vim.bo.filetype
+  local cmd
+  if ft == "python" then
+    cmd = "pytest"
+  elseif ft == "javascript" or ft == "typescript" or ft == "javascriptreact" or ft == "typescriptreact" then
+    cmd = "npm test"
+  elseif ft == "rust" then
+    cmd = "cargo test"
+  elseif ft == "lua" then
+    cmd = "busted"
+  else
+    cmd = vim.o.shell
+  end
+  Snacks.terminal.toggle(cmd, { interactive = false })
+end, { desc = "Run test suite" })

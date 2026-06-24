@@ -11,6 +11,7 @@ opt.relativenumber = true
 -- Tabs & indentation
 opt.tabstop = 2
 opt.shiftwidth = 2
+opt.softtabstop = 2
 opt.expandtab = true
 opt.autoindent = true
 opt.smartindent = true
@@ -21,6 +22,9 @@ opt.incsearch = true
 opt.ignorecase = true
 opt.smartcase = true
 
+-- Command completion
+opt.wildmode = { "lastused", "full" }
+
 -- Cursor & scrolling
 opt.cursorline = true
 opt.scrolloff = 10
@@ -30,6 +34,7 @@ opt.sidescrolloff = 8
 opt.termguicolors = true
 opt.signcolumn = "yes"
 opt.colorcolumn = "80"
+opt.winborder = "rounded"
 
 -- Splits
 opt.splitright = true
@@ -49,6 +54,7 @@ opt.timeoutlen = 300
 
 -- Better completion
 opt.completeopt = "menu,menuone,noselect"
+opt.pumheight = 15
 
 -- Mouse support (scroll, resize, select with mouse)
 opt.mouse = "a"

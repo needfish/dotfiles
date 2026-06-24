@@ -57,3 +57,5 @@ _ensure_venv_preexec() {
     esac
 }
 preexec_functions+=("_ensure_venv_preexec")
+alias nivm=nvim
+alias py='uv run python'

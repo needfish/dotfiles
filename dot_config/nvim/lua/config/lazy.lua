@@ -8,7 +8,8 @@ vim.opt.rtp:prepend(lazypath)
 
 -- Plugin specifications
 require("lazy").setup({
-  -- Colorscheme (ayu)
+  -- Colorschemes
+  -- Ayu (current active)
   {
     "Shatur/neovim-ayu",
     name = "ayu",
@@ -17,6 +18,15 @@ require("lazy").setup({
       mirage = false, -- false = dark variant, true = mirage variant
       terminal = true,
       overrides = {},
+    },
+  },
+
+  -- Monokai (backup, comment/uncomment to switch)
+  {
+    "tanvirtin/monokai.nvim",
+    priority = 1000,
+    opts = {
+      transparent = false,
     },
   },
 
@@ -63,6 +73,7 @@ require("lazy").setup({
       dim = { enabled = true },
       zen = { enabled = true },
       statuscolumn = { enabled = true },
+      terminal = { enabled = true },
       words = { enabled = true },
     },
     picker = {
@@ -94,7 +105,7 @@ require("lazy").setup({
     lazy = false,
     config = function()
       require("nvim-treesitter.config").setup({
-        ensure_installed = { "lua", "vim", "vimdoc", "query", "markdown", "markdown_inline", "python", "javascript", "typescript", "rust", "bash", "json", "yaml", "astro" },
+        ensure_installed = { "lua", "vim", "vimdoc", "query", "markdown", "markdown_inline", "python", "javascript", "typescript", "rust", "bash", "json", "yaml", "astro", "terraform", "hcl" },
         auto_install = true,
         highlight = { enable = true },
         indent = { enable = true },
@@ -147,14 +158,18 @@ require("lazy").setup({
       },
     },
     config = function()
-      require("mason").setup()
-      require("mason-lspconfig").setup({
-        ensure_installed = { "lua_ls", "ts_ls", "pyright", "rust_analyzer", "astro" },
-        automatic_enable = true,
-      })
+      -- Build capabilities first (must register vim.lsp.config before enable)
+      -- Start with full protocol capabilities (includes semanticTokens)
+      -- then overlay the completion-specific capabilities from cmp-nvim-lsp.
+      -- This is necessary because cmp_nvim_lsp.default_capabilities() only returns
+      -- textDocument.completion, which would omit semanticTokens and other features.
+      local capabilities = vim.tbl_deep_extend(
+        "force",
+        vim.lsp.protocol.make_client_capabilities(),
+        require("cmp_nvim_lsp").default_capabilities()
+      )
 
-      local capabilities = require("cmp_nvim_lsp").default_capabilities()
-
+      -- Register global config BEFORE enabling servers, so semantic tokens etc. are available
       vim.lsp.config("*", {
         capabilities = capabilities,
         on_attach = function(client, bufnr)
@@ -179,6 +194,13 @@ require("lazy").setup({
         end,
       })
 
+      -- Now enable servers (they'll pick up the config registered above)
+      require("mason").setup()
+      require("mason-lspconfig").setup({
+        ensure_installed = { "lua_ls", "ts_ls", "basedpyright", "rust_analyzer", "astro", "terraformls" },
+        automatic_enable = true,
+      })
+
       vim.lsp.config("lua_ls", {
         settings = {
           Lua = {
@@ -186,6 +208,43 @@ require("lazy").setup({
             workspace = {
               checkThirdParty = false,
               library = { vim.env.VIMRUNTIME },
+            },
+          },
+        },
+      })
+
+      -- basedpyright: limit workspace scope to avoid scanning the entire filesystem
+      vim.lsp.config("basedpyright", {
+        settings = {
+          python = {
+            analysis = {
+              -- Only analyze files under these paths (relative to workspace root)
+              include = {},
+              -- Exclude system-level and generated directories from analysis
+              exclude = {
+                "**/node_modules",
+                "**/__pycache__",
+                "**/.git",
+                "**/.mypy_cache",
+                "**/.pytest_cache",
+                "**/.venv",
+                "**/venv",
+                "**/.tox",
+                "**/.local",
+                "**/Library",
+                "**/Applications",
+                "**/Downloads",
+                "**/Desktop",
+                "**/Documents",
+                "**/Pictures",
+                "**/Music",
+                "**/Movies",
+                "**/Public",
+              },
+              -- If the workspace root is the home directory, set a more useful root
+              autoSearchPaths = false,
+              useLibraryCodeForTypes = false,
+              diagnosticMode = "openFilesOnly",
             },
           },
         },
@@ -227,6 +286,20 @@ require("lazy").setup({
               closureReturnTypeHints = { enable = "always" },
               lifetimeElisionHints = { enable = "always" },
               reborrowHints = { enable = "always" },
+            },
+          },
+        },
+      })
+
+      -- Terraform LSP (terraform-ls)
+      vim.lsp.config("terraformls", {
+        settings = {
+          terraform = {
+            codelens = {
+              references = { enable = true },
+            },
+            validate = {
+              enable = true,
             },
           },
         },
@@ -326,6 +399,7 @@ require("lazy").setup({
         yaml = { "prettier" },
         markdown = { "prettier" },
         rust = { "rustfmt", lsp_format = "fallback" },
+        terraform = { "terraform_fmt" },
         sh = { "shfmt" },
       },
     },
@@ -348,14 +422,14 @@ require("lazy").setup({
       "nvim-treesitter/nvim-treesitter",
       "nvim-tree/nvim-web-devicons",
     },
-    cmd = { "AerialToggle", "AerialOpen", "AerialNavToggle" },
+    lazy = false,
     opts = {
       backends = { "treesitter", "lsp", "markdown" },
       open_automatic = true,
       show_guides = true,
       layout = {
         max_width = { 40, 0.2 },
-        default_direction = "prefer_left",
+        default_direction = "prefer_right",
       },
       highlight_on_hover = true,
       filter_kind = {
@@ -413,7 +487,7 @@ require("lazy").setup({
     opts = {},
   },
 
-  -- Inline diagnostics (replaces virtual_text)
+  -- Inline diagnostics
   {
     "rachartier/tiny-inline-diagnostic.nvim",
     event = "VeryLazy",
@@ -430,32 +504,192 @@ require("lazy").setup({
     "akinsho/bufferline.nvim",
     event = "VeryLazy",
     dependencies = { "nvim-tree/nvim-web-devicons" },
-    opts = {
-      options = {
-        mode = "buffers",
-        show_buffer_close_icons = false,
-        show_close_icon = false,
-      },
-    },
+    opts = function()
+      return {
+        options = {
+          mode = "buffers",
+          show_buffer_close_icons = false,
+          show_close_icon = false,
+          style_preset = {
+            require("bufferline").style_preset.no_italic,
+          },
+        },
+      }
+    end,
   },
 
   -- Statusline
   {
     "nvim-lualine/lualine.nvim",
     event = "VeryLazy",
-    dependencies = { "nvim-tree/nvim-web-devicons" },
+    dependencies = {
+      "nvim-tree/nvim-web-devicons",
+      {
+        "SmiteshP/nvim-navic",
+        opts = {
+          lsp = { auto_attach = true },
+        },
+      },
+    },
     opts = {
       options = {
-        theme = "ayu",
-        component_separators = { left = "", right = "" },
-        section_separators = { left = "", right = "" },
+        theme = "auto",
+        component_separators = '',
+        section_separators = '',
+        disabled_filetypes = {
+          winbar = { "dashboard", "lazy", "alpha" },
+        },
+      },
+      sections = {
+        lualine_a = {},
+        lualine_b = {},
+        lualine_c = {
+          -- Left accent
+          {
+            function() return '▊' end,
+            color = { fg = '#89b4fa' },
+            padding = { left = 0, right = 1 },
+          },
+          -- Mode indicator (full name, color-coded)
+          {
+            'mode',
+            fmt = function(mode)
+              local names = {
+                n = 'NORMAL', i = 'INSERT', v = 'VISUAL',
+                V = 'V-LINE',  ['\22'] = 'V-BLOCK',
+                c = 'COMMAND', s = 'SELECT',  S = 'S-LINE',
+                R = 'REPLACE', t = 'TERMINAL',
+              }
+              return names[mode] or mode:upper()
+            end,
+            color = function()
+              local colors = {
+                n = '#f38ba8', i = '#a6e3a1', v = '#89b4fa',
+                V = '#89b4fa', ['\22'] = '#89b4fa',
+                c = '#cba6f7', s = '#fab387', S = '#fab387',
+                R = '#f9e2af', t = '#94e2d5',
+              }
+              return { fg = colors[vim.fn.mode()], gui = 'bold' }
+            end,
+            padding = { right = 1 },
+          },
+          -- Filename (bold)
+          { 'filename', color = { gui = 'bold' }, padding = { left = 1, right = 1 } },
+          -- Branch
+          { 'branch', icon = 'bran', color = { gui = 'bold' }, padding = { left = 1, right = 1 } },
+          -- Diagnostics
+          {
+            'diagnostics',
+            sources = { 'nvim_diagnostic' },
+            sections = { 'error', 'warn', 'info', 'hint' },
+            symbols = { error = '!! ', warn = '! ', info = 'i ', hint = '? ' },
+            colored = true,
+            update_in_insert = false,
+            always_visible = false,
+          },
+          -- Center fill
+          { function() return '%=' end },
+          -- LSP name
+          {
+            function()
+              local clients = vim.lsp.get_clients({ bufnr = 0 })
+              if #clients > 0 then
+                return clients[1].name
+              end
+              return ''
+            end,
+            icon = 'LSP',
+            color = { gui = 'bold' },
+            padding = { left = 1, right = 1 },
+          },
+        },
+        lualine_x = {
+          -- Diff
+          {
+            'diff',
+            symbols = { added = '+ ', modified = '~ ', removed = '- ' },
+            colored = true,
+          },
+          -- Filetype
+          {
+            'filetype',
+            padding = { left = 1, right = 1 },
+          },
+          -- Location
+          {
+            'location',
+            padding = { left = 1 },
+          },
+          -- Right accent
+          {
+            function() return '▊' end,
+            color = { fg = '#89b4fa' },
+            padding = { left = 1, right = 0 },
+          },
+        },
+        lualine_y = {},
+        lualine_z = {},
+      },
+      inactive_sections = {
+        lualine_a = {},
+        lualine_b = {},
+        lualine_c = { 'filename' },
+        lualine_x = { 'location' },
+        lualine_y = {},
+        lualine_z = {},
+      },
+      winbar = {
+        lualine_c = {
+          { "navic", color_correction = "dynamic" },
+        },
       },
     },
   },
 
+  -- Scope context (shows current function/class at top of window)
+  {
+    "nvim-treesitter/nvim-treesitter-context",
+    opts = {
+      enable = true,
+      max_lines = 3,
+      multiline_threshold = 10,
+      mode = "cursor",
+      separator = "─",
+    },
+    keys = {
+      { "[c", function() require("treesitter-context").go_to_context() end, desc = "Go to parent scope" },
+    },
+  },
+
+  -- Git: GitHub permalink generation
+  {
+    "linrongbin16/gitlinker.nvim",
+    cmd = "GitLink",
+    opts = {},
+    keys = {
+      { "<leader>u", "<cmd>GitLink<cr>", desc = "GitHub permalink", mode = { "n", "v" } },
+    },
+  },
+
+  -- Git: visual diff UI
+  {
+    "sindrets/diffview.nvim",
+    cmd = { "DiffviewOpen", "DiffviewClose", "DiffviewToggleFiles" },
+    keys = {
+      { "<leader>d", "<cmd>DiffviewOpen<cr>", desc = "Diffview open" },
+    },
+  },
+
+  -- Git: full porcelain (:G, :Gdiffsplit, :Gblame, :Gstatus, etc.)
+  {
+    "tpope/vim-fugitive",
+    cmd = { "G", "Gdiffsplit", "Gblame", "Glog", "Gstatus" },
+  },
+
+
 }, {
   install = {
-    colorscheme = { "ayu" },
+    colorscheme = { "ayu", "monokai" },
   },
   checker = {
     enabled = true,
