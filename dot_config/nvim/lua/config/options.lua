@@ -73,6 +73,9 @@ opt.fillchars:append({ eob = " " })
 -- Hide mode text (already shown in lualine)
 opt.showmode = false
 
+-- Hide tabline (no bufferline)
+opt.showtabline = 0
+
 -- Netrw (disabled -- snacks.explorer replaces it)
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1

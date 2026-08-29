@@ -15,9 +15,9 @@
   "buffer_font_size": 15,
   "theme": {
     "mode": "dark",
-    "light": "One Light",
+    "light": "Alabaster BG",
     "dark": "Ayu Darker",
   },
-  "ui_font_family": "Kitan Mono",
-  "buffer_font_family": "Kitan Mono",
+  "ui_font_family": "Kitan Mono Term",
+  "buffer_font_family": "Kitan Mono Term",
 }

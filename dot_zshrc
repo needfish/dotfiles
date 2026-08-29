@@ -59,3 +59,11 @@ _ensure_venv_preexec() {
 preexec_functions+=("_ensure_venv_preexec")
 alias nivm=nvim
 alias py='uv run python'
+alias split='wezterm cli split-pane --right'
+
+# bun completions
+[ -s "/Users/kitan/.bun/_bun" ] && source "/Users/kitan/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"

@@ -52,6 +52,13 @@ config.keys = {
     { key = ']',          mods = 'ALT',       action = act.ActivateTabRelative(1) },
 }
 
+config.window_padding = {
+  left   = 0,
+  right  = 0,
+  top    = 0,
+  bottom = 0,
+}
+
 config.window_background_opacity = 0.85
 config.macos_window_background_blur = 20
 
@@ -59,7 +66,7 @@ config.macos_window_background_blur = 20
 config.window_close_confirmation = "NeverPrompt"
 config.window_decorations = "TITLE | RESIZE"
 config.integrated_title_button_style = "MacOsNative"
-config.font = wezterm.font("Kitan Mono")
+config.font = wezterm.font("Kitan Mono Term")
 config.font_size = 16
 config.color_scheme = "Ayu Dark (Gogh)"
 
@@ -67,8 +74,10 @@ config.color_scheme = "Ayu Dark (Gogh)"
 config.enable_tab_bar = true
 config.show_tab_index_in_tab_bar = false
 config.use_fancy_tab_bar = true
+config.tab_bar_at_bottom = false
+
 config.window_frame = {
-    font = wezterm.font('Kitan Mono'),
+    font = wezterm.font('Kitan Mono Term'),
     font_size = 12,
 }
 
