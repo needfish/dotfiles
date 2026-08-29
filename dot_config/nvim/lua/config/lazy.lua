@@ -95,6 +95,8 @@ require("lazy").setup({
       { "<leader>e",  function() Snacks.picker.files() end,                                 desc = "Find files" },
       { "<leader>z",  function() Snacks.zen() end,                                          desc = "Toggle zen mode" },
       { "<leader>n",  function() Snacks.dim() end,                                          desc = "Toggle dim" },
+      { "<leader>fe", function() Snacks.explorer() end,                                       desc = "Explorer" },
+      { "<leader>mv", function() Snacks.rename.rename_file() end,                                desc = "Rename file" },
     },
   },
 
@@ -391,13 +393,14 @@ require("lazy").setup({
       formatters_by_ft = {
         lua = { "stylua" },
         python = { "ruff_format", "ruff_organize_imports" },
+        astro = { "prettier" },
         javascript = { "prettierd", "prettier", stop_after_first = true },
         typescript = { "prettierd", "prettier", stop_after_first = true },
         javascriptreact = { "prettierd", "prettier", stop_after_first = true },
         typescriptreact = { "prettierd", "prettier", stop_after_first = true },
         json = { "prettier" },
         yaml = { "prettier" },
-        markdown = { "prettier" },
+        markdown = { "prettier", "injected" },
         rust = { "rustfmt", lsp_format = "fallback" },
         terraform = { "terraform_fmt" },
         sh = { "shfmt" },
@@ -477,7 +480,9 @@ require("lazy").setup({
   {
     "numToStr/Comment.nvim",
     event = { "BufReadPost", "BufNewFile" },
-    opts = {},
+    config = function()
+      require("Comment").setup({})
+    end,
   },
 
   -- Auto-close brackets, quotes, etc.
@@ -499,24 +504,7 @@ require("lazy").setup({
     end,
   },
 
-  -- Tab bar at top
-  {
-    "akinsho/bufferline.nvim",
-    event = "VeryLazy",
-    dependencies = { "nvim-tree/nvim-web-devicons" },
-    opts = function()
-      return {
-        options = {
-          mode = "buffers",
-          show_buffer_close_icons = false,
-          show_close_icon = false,
-          style_preset = {
-            require("bufferline").style_preset.no_italic,
-          },
-        },
-      }
-    end,
-  },
+
 
   -- Statusline
   {
@@ -683,9 +671,35 @@ require("lazy").setup({
   -- Git: full porcelain (:G, :Gdiffsplit, :Gblame, :Gstatus, etc.)
   {
     "tpope/vim-fugitive",
-    cmd = { "G", "Gdiffsplit", "Gblame", "Glog", "Gstatus" },
+    cmd = { "G", "Git", "Gdiffsplit", "Gblame", "Glog", "Gstatus" },
   },
 
+  -- AI assistant (pi.dev)
+  {
+    "pablopunk/pi.nvim",
+    cmd = { "PiAsk", "PiAskSelection", "PiCancel", "PiLog" },
+    opts = {
+      provider = "opencode-go",
+      model = "deepseek-v4-flash",
+    },
+    keys = {
+      { "<leader>ai", ":PiAsk<CR>",                desc = "Ask pi",         mode = "n" },
+      { "<leader>ai", ":PiAskSelection<CR>",        desc = "Ask pi (selection)", mode = "v" },
+      { "<leader>al", ":PiLog<CR>",                 desc = "Pi session log", mode = "n" },
+    },
+  },
+
+  -- pi-fill-stubs: fill stub implementations via Pi
+  {
+    dir = "/Users/kitan/dev/experiments/pi-fill-stubs.nvim",
+    config = function()
+      require("pi-fill-stubs").setup({
+        -- provider = "anthropic",
+        -- model = "claude-sonnet-4-20250514",
+        timeout = 300,
+      })
+    end,
+  },
 
 }, {
   install = {
