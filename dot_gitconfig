@@ -5,3 +5,9 @@
 # Please adapt and uncomment the following lines:
 #	name = Kiet Nguyen
 #	email = kiet.swe@gmail.com
+[credential "https://github.com"]
+	helper = 
+	helper = !/Users/kitan/.local/share/mise/installs/gh/latest/gh_2.95.0_macOS_arm64/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !/Users/kitan/.local/share/mise/installs/gh/latest/gh_2.95.0_macOS_arm64/bin/gh auth git-credential
