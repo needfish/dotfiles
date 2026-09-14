@@ -1,6 +1,8 @@
 # Volta lines removed -- migrating to mise
 
+{{ if eq .chezmoi.os "darwin" -}}
 eval "$(/opt/homebrew/bin/brew shellenv)"
+{{ end -}}
 
 typeset -U path PATH
 path=($path)
@@ -18,7 +20,9 @@ eval "$(starship init zsh)"
 # Fix Delete key (terminfo[kdch1] is empty inside tmux, so hardcode fallback)
 bindkey "${terminfo[kdch1]:-\e[3~}" delete-char
 
+{{ if eq .chezmoi.os "darwin" -}}
 eval "$(/Users/kitan/.local/bin/mise activate zsh)" # added by https://mise.run/zsh
+{{ end -}}
 
 # Automatic Python venv via mise + uv
 # Creates .venv on cd into projects with pyproject.toml or requirements.txt
@@ -62,7 +66,9 @@ alias py='uv run python'
 alias split='wezterm cli split-pane --right'
 
 # bun completions
+{{ if eq .chezmoi.os "darwin" -}}
 [ -s "/Users/kitan/.bun/_bun" ] && source "/Users/kitan/.bun/_bun"
+{{ end -}}
 
 # bun
 export BUN_INSTALL="$HOME/.bun"
