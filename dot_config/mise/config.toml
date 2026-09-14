@@ -45,6 +45,8 @@ yq = "latest"
 aws-cli = "latest"
 
 # Shell navigation, Kubernetes helpers, and system inspection.
+ripgrep = "latest"
+fd = "latest"
 fzf = "latest"
 zoxide = "latest"
 eza = "latest"
