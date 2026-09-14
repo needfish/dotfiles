@@ -40,6 +40,7 @@ terraform = "latest"
 # Kubernetes and cloud CLIs.
 kubectl = "latest"
 helm = "latest"
+argocd = "latest"
 kustomize = "latest"
 yq = "latest"
 aws-cli = "latest"
