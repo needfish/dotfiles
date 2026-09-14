@@ -1,16 +1,36 @@
-[tools]
-go = "latest"
-node = "24"
-pnpm = "11.8"
-python = "3.14"
-lua = "latest"
-gh = "latest"
-terraform = "latest"
-ripgrep = "latest"
-chezmoi = "latest"
-cmake = "latest"
-tmux = "latest"
-neovim = "0.12.3"
-
 [settings]
-python.uv_venv_auto = true
+auto_update = true
+# Honor .node-version / .nvmrc files in project dirs (per-project Node pinning).
+idiomatic_version_file_enable_tools = ["node"]
+
+[tools]
+# --- Reproducibility: pin exact versions. Bump deliberately. ---
+node = "26.8.2"
+
+# pnpm via the aqua backend (standalone release binary).
+# NOT `npm:pnpm`: pnpm >=12 ships a native ELF binary that mise's npm-shim
+# imports as JS and crashes with a SyntaxError. aqua fetches the real release.
+"aqua:pnpm/pnpm" = "12.4.1"
+
+# Global JS CLI tools via mise (instead of `npm i -g ...`), so they are
+# recreated by `mise install` on every machine and survive Node upgrades.
+"npm:@earendil-works/pi-coding-agent" = "0.85.1"
+uv = "latest"
+chezmoi = "latest"
+rust = "latest"
+go = "latest"
+docker-cli = "latest"
+docker-compose = "latest"
+"aqua:k3s-io/k3s" = "latest"
+"github:kubernetes-sigs/headlamp" = "latest"
+
+# Formatters and linters for Neovim (conform.nvim, nvim-lint).
+stylua = "latest"
+shfmt = "latest"
+shellcheck = "latest"
+ruff = "latest"
+terraform = "latest"
+"cargo:selene" = "latest"
+"npm:prettier" = "latest"
+"npm:@fsouza/prettierd" = "latest"
+"npm:eslint" = "latest"

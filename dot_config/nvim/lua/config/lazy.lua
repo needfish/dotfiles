@@ -100,21 +100,6 @@ require("lazy").setup({
     },
   },
 
-  -- Treesitter (better syntax highlighting)
-  {
-    "nvim-treesitter/nvim-treesitter",
-    build = ":TSInstallSync all",
-    lazy = false,
-    config = function()
-      require("nvim-treesitter.config").setup({
-        ensure_installed = { "lua", "vim", "vimdoc", "query", "markdown", "markdown_inline", "python", "javascript", "typescript", "rust", "bash", "json", "yaml", "astro", "terraform", "hcl" },
-        auto_install = true,
-        highlight = { enable = true },
-        indent = { enable = true },
-      })
-    end,
-  },
-
   -- LSP support (Neovim 0.11+ native API)
   {
     "neovim/nvim-lspconfig",
@@ -422,12 +407,11 @@ require("lazy").setup({
   {
     "stevearc/aerial.nvim",
     dependencies = {
-      "nvim-treesitter/nvim-treesitter",
       "nvim-tree/nvim-web-devicons",
     },
     lazy = false,
     opts = {
-      backends = { "treesitter", "lsp", "markdown" },
+      backends = { "lsp", "markdown" },
       open_automatic = true,
       show_guides = true,
       layout = {
@@ -634,21 +618,6 @@ require("lazy").setup({
     },
   },
 
-  -- Scope context (shows current function/class at top of window)
-  {
-    "nvim-treesitter/nvim-treesitter-context",
-    opts = {
-      enable = true,
-      max_lines = 3,
-      multiline_threshold = 10,
-      mode = "cursor",
-      separator = "─",
-    },
-    keys = {
-      { "[c", function() require("treesitter-context").go_to_context() end, desc = "Go to parent scope" },
-    },
-  },
-
   -- Git: GitHub permalink generation
   {
     "linrongbin16/gitlinker.nvim",
@@ -687,18 +656,6 @@ require("lazy").setup({
       { "<leader>ai", ":PiAskSelection<CR>",        desc = "Ask pi (selection)", mode = "v" },
       { "<leader>al", ":PiLog<CR>",                 desc = "Pi session log", mode = "n" },
     },
-  },
-
-  -- pi-fill-stubs: fill stub implementations via Pi
-  {
-    dir = "/Users/kitan/dev/experiments/pi-fill-stubs.nvim",
-    config = function()
-      require("pi-fill-stubs").setup({
-        -- provider = "anthropic",
-        -- model = "claude-sonnet-4-20250514",
-        timeout = 300,
-      })
-    end,
   },
 
 }, {
