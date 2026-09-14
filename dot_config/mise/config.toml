@@ -8,6 +8,7 @@ github.credential_command = "gh auth token"
 [tools]
 # --- Reproducibility: pin exact versions. Bump deliberately. ---
 node = "26.8.2"
+neovim = "0.12.3"
 
 # pnpm via the aqua backend (standalone release binary).
 # NOT `npm:pnpm`: pnpm >=12 ships a native ELF binary that mise's npm-shim
