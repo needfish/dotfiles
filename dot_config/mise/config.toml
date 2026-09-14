@@ -24,8 +24,10 @@ rust = "latest"
 go = "latest"
 docker-cli = "latest"
 docker-compose = "latest"
-"aqua:k3s-io/k3s" = "latest"
-"github:kubernetes-sigs/headlamp" = "latest"
+"aqua:k3s-io/k3s" = { version = "latest", os = ["linux"] }
+# Headlamp ships .dmg/.deb assets the github backend can't match; install via
+# brew on macOS, linuxbrew on Linux.
+"github:kubernetes-sigs/headlamp" = { version = "latest", os = ["linux"] }
 
 # Formatters and linters for Neovim (conform.nvim, nvim-lint).
 stylua = "latest"
@@ -47,7 +49,7 @@ yq = "latest"
 aws-cli = "latest"
 
 # Shell navigation, Kubernetes helpers, and system inspection.
-broot = "latest"
+broot = { version = "latest", os = ["linux"] }
 ripgrep = "latest"
 fd = "latest"
 fzf = "latest"
@@ -65,4 +67,4 @@ direnv = "latest"
 just = "latest"
 dust = "latest"
 duf = "latest"
-btop = "latest"
+btop = { version = "latest", os = ["linux"] }
