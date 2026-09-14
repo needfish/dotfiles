@@ -37,14 +37,6 @@ map("x", "p", [["_dP]], { desc = "Paste without overwriting yank" })
 map("n", "<leader>w", ":w ", { desc = "Save file (type name to save as)" })
 map("n", "<leader>q", "<cmd>q<CR>", { desc = "Quit" })
 
--- Buffer navigation (tab-like)
-map("n", "[b", "<cmd>BufferLineCyclePrev<CR>", { desc = "Previous buffer" })
-map("n", "]b", "<cmd>BufferLineCycleNext<CR>", { desc = "Next buffer" })
--- NOTE: <S-h>/<S-l> override Vim's H/L (top/bottom of screen).
--- Remove these two lines if you use H/L for screen navigation.
-map("n", "<S-h>", "<cmd>BufferLineCyclePrev<CR>", { desc = "Previous buffer" })
-map("n", "<S-l>", "<cmd>BufferLineCycleNext<CR>", { desc = "Next buffer" })
-
 -- Copy relative filepath to clipboard
 map("n", "<leader>y", function()
   vim.fn.setreg("+", vim.fn.expand("%"))
