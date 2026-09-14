@@ -121,9 +121,9 @@ eval "$($HOME/.local/bin/mise activate bash)"
 [ -x /home/linuxbrew/.linuxbrew/bin/brew ] && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv bash)"
 eval "$(starship init bash)"
 eval "$(zoxide init bash)"
+source <(fzf --bash)
 eval "$(atuin init bash)"
 eval "$(direnv hook bash)"
-source <(fzf --bash)
 [ -f "$HOME/.config/broot/launcher/bash/br" ] && source "$HOME/.config/broot/launcher/bash/br"
 
 # File search: f by name, g by content (opens the match in $EDITOR).
