@@ -125,3 +125,17 @@ eval "$(atuin init bash)"
 eval "$(direnv hook bash)"
 source <(fzf --bash)
 [ -f "$HOME/.config/broot/launcher/bash/br" ] && source "$HOME/.config/broot/launcher/bash/br"
+
+# File search: f by name, g by content (opens the match in $EDITOR).
+export EDITOR=nvim
+f() {
+  local file
+  file=$(rg --files --hidden -g '!.git' | fzf --preview 'bat --color=always --line-range=:200 {}') &&
+    "$EDITOR" "$file"
+}
+g() {
+  local x file line
+  x=$(rg -n --hidden -g '!.git' --no-heading "${*:-.}" | fzf --delimiter : --preview 'bat --color=always --highlight-line {2} {1}' --preview-window '+{2}-/2') || return
+  file=${x%%:*}; line=${x#*:}; line=${line%%:*}
+  "$EDITOR" "+$line" "$file"
+}
