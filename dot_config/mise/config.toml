@@ -2,6 +2,8 @@
 auto_update = true
 # Honor .node-version / .nvmrc files in project dirs (per-project Node pinning).
 idiomatic_version_file_enable_tools = ["node"]
+# Authenticate GitHub API calls for version lookups via the gh CLI.
+github.credential_command = "gh auth token"
 
 [tools]
 # --- Reproducibility: pin exact versions. Bump deliberately. ---
@@ -34,3 +36,10 @@ terraform = "latest"
 "npm:prettier" = "latest"
 "npm:@fsouza/prettierd" = "latest"
 "npm:eslint" = "latest"
+
+# Kubernetes and cloud CLIs.
+kubectl = "latest"
+helm = "latest"
+kustomize = "latest"
+yq = "latest"
+aws-cli = "latest"
