@@ -125,6 +125,7 @@ source <(fzf --bash)
 eval "$(atuin init bash)"
 eval "$(direnv hook bash)"
 [ -f "$HOME/.config/broot/launcher/bash/br" ] && source "$HOME/.config/broot/launcher/bash/br"
+alias b=br
 
 # File search: f by name, g by content (opens the match in $EDITOR).
 export EDITOR=nvim
