@@ -1,14 +1,8 @@
 -- Core keymaps
 local map = vim.keymap.set
 
--- Better escape from insert mode
-map("i", "jk", "<Esc>", { desc = "Escape insert mode" })
-
 -- Clear search highlights (double-tap Esc to avoid interfering with other mappings)
 map("n", "<Esc><Esc>", "<cmd>nohlsearch<CR>", { desc = "Clear search highlights (double-tap)" })
-
--- Toggle search highlight on/off
-map("n", "<leader>/", "<cmd>set hlsearch!<CR>", { desc = "Toggle search highlights" })
 
 -- Window navigation
 map("n", "<C-h>", "<C-w>h", { desc = "Go to left window" })
