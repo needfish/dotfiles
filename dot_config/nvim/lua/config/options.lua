@@ -32,7 +32,6 @@ opt.sidescrolloff = 8
 -- UI
 opt.termguicolors = true
 opt.signcolumn = "yes"
-opt.colorcolumn = "80"
 opt.winborder = "rounded"
 
 -- Splits
