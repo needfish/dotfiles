@@ -21,13 +21,14 @@ require("lazy").setup({
     },
   },
 
-  -- Monokai (backup, comment/uncomment to switch)
+  -- GitHub colorschemes (github_light = pure white background)
   {
-    "tanvirtin/monokai.nvim",
+    "projekt0n/github-nvim-theme",
+    lazy = false,
     priority = 1000,
-    opts = {
-      transparent = false,
-    },
+    config = function()
+      require("github-theme").setup({})
+    end,
   },
 
   -- Fuzzy finder, file explorer & QoL (snacks.nvim)
@@ -68,13 +69,13 @@ require("lazy").setup({
       notifier = { enabled = true },
       quickfile = { enabled = true },
       scope = { enabled = true },
-      scroll = { enabled = true },
-      session = { enabled = true },
+      scroll = { enabled = false },
+      session = { enabled = false },
       dim = { enabled = true },
       zen = { enabled = true },
       statuscolumn = { enabled = true },
       terminal = { enabled = true },
-      words = { enabled = true },
+      words = { enabled = false },
     },
     picker = {
       sources = {
@@ -92,10 +93,9 @@ require("lazy").setup({
       { "<leader>fh", function() Snacks.picker.help() end,                                  desc = "Help tags" },
       { "<leader>sd", function() Snacks.picker.diagnostics() end,                           desc = "Workspace diagnostics" },
       { "<leader>sD", function() Snacks.picker.diagnostics({ filter = { bufnr = 0 } }) end, desc = "Buffer diagnostics" },
-      { "<leader>e",  function() Snacks.picker.files() end,                                 desc = "Find files" },
       { "<leader>z",  function() Snacks.zen() end,                                          desc = "Toggle zen mode" },
       { "<leader>n",  function() Snacks.dim() end,                                          desc = "Toggle dim" },
-      { "<leader>fe", function() Snacks.explorer() end,                                       desc = "Explorer" },
+      { "<leader>e", function() Snacks.explorer() end, desc = "Explorer" },
       { "<leader>mv", function() Snacks.rename.rename_file() end,                                desc = "Rename file" },
     },
   },
@@ -112,30 +112,17 @@ require("lazy").setup({
           "hrsh7th/cmp-nvim-lsp",
           "hrsh7th/cmp-buffer",
           "hrsh7th/cmp-path",
-          "L3MON4D3/LuaSnip",
-          "saadparwaiz1/cmp_luasnip",
         },
         event = "InsertEnter",
         config = function()
           local cmp = require("cmp")
           cmp.setup({
-            snippet = {
-              expand = function(args)
-                require("luasnip").lsp_expand(args.body)
-              end,
-            },
             mapping = cmp.mapping.preset.insert({
-              ["<C-b>"] = cmp.mapping.scroll_docs(-4),
-              ["<C-f>"] = cmp.mapping.scroll_docs(4),
               ["<C-Space>"] = cmp.mapping.complete(),
-              ["<C-e>"] = cmp.mapping.abort(),
               ["<CR>"] = cmp.mapping.confirm({ select = true }),
-              ["<C-n>"] = cmp.mapping.select_next_item(),
-              ["<C-p>"] = cmp.mapping.select_prev_item(),
             }),
             sources = cmp.config.sources({
               { name = "nvim_lsp" },
-              { name = "luasnip" },
             }, {
               { name = "buffer" },
               { name = "path" },
@@ -155,6 +142,9 @@ require("lazy").setup({
         vim.lsp.protocol.make_client_capabilities(),
         require("cmp_nvim_lsp").default_capabilities()
       )
+
+      -- Plain-text completions only (no snippet engine installed)
+      capabilities.textDocument.completion.completionItem.snippetSupport = false
 
       -- Register global config BEFORE enabling servers, so semantic tokens etc. are available
       vim.lsp.config("*", {
@@ -208,26 +198,7 @@ require("lazy").setup({
               -- Only analyze files under these paths (relative to workspace root)
               include = {},
               -- Exclude system-level and generated directories from analysis
-              exclude = {
-                "**/node_modules",
-                "**/__pycache__",
-                "**/.git",
-                "**/.mypy_cache",
-                "**/.pytest_cache",
-                "**/.venv",
-                "**/venv",
-                "**/.tox",
-                "**/.local",
-                "**/Library",
-                "**/Applications",
-                "**/Downloads",
-                "**/Desktop",
-                "**/Documents",
-                "**/Pictures",
-                "**/Music",
-                "**/Movies",
-                "**/Public",
-              },
+              exclude = { "**/node_modules", "**/.venv", "**/venv" },
               -- If the workspace root is the home directory, set a more useful root
               autoSearchPaths = false,
               useLibraryCodeForTypes = false,
@@ -363,7 +334,7 @@ require("lazy").setup({
     cmd = { "ConformInfo" },
     keys = {
       {
-        "<leader>f",
+        "<leader>fm",
         function()
           require("conform").format({ async = true })
         end,
@@ -390,16 +361,6 @@ require("lazy").setup({
         terraform = { "terraform_fmt" },
         sh = { "shfmt" },
       },
-    },
-  },
-
-  -- Keymap discoverability
-  {
-    "folke/which-key.nvim",
-    event = "VeryLazy",
-    opts = {},
-    keys = {
-      { "<leader>", desc = "WhichKey prefix" },
     },
   },
 
@@ -460,22 +421,6 @@ require("lazy").setup({
     },
   },
 
-  -- Comment toggling
-  {
-    "numToStr/Comment.nvim",
-    event = { "BufReadPost", "BufNewFile" },
-    config = function()
-      require("Comment").setup({})
-    end,
-  },
-
-  -- Auto-close brackets, quotes, etc.
-  {
-    "windwp/nvim-autopairs",
-    event = "InsertEnter",
-    opts = {},
-  },
-
   -- Inline diagnostics
   {
     "rachartier/tiny-inline-diagnostic.nvim",
@@ -496,135 +441,18 @@ require("lazy").setup({
     event = "VeryLazy",
     dependencies = {
       "nvim-tree/nvim-web-devicons",
-      {
-        "SmiteshP/nvim-navic",
-        opts = {
-          lsp = { auto_attach = true },
-        },
-      },
     },
     opts = {
       options = {
         theme = "auto",
-        component_separators = '',
-        section_separators = '',
         disabled_filetypes = {
           winbar = { "dashboard", "lazy", "alpha" },
         },
       },
       sections = {
-        lualine_a = {},
-        lualine_b = {},
-        lualine_c = {
-          -- Left accent
-          {
-            function() return '▊' end,
-            color = { fg = '#89b4fa' },
-            padding = { left = 0, right = 1 },
-          },
-          -- Mode indicator (full name, color-coded)
-          {
-            'mode',
-            fmt = function(mode)
-              local names = {
-                n = 'NORMAL', i = 'INSERT', v = 'VISUAL',
-                V = 'V-LINE',  ['\22'] = 'V-BLOCK',
-                c = 'COMMAND', s = 'SELECT',  S = 'S-LINE',
-                R = 'REPLACE', t = 'TERMINAL',
-              }
-              return names[mode] or mode:upper()
-            end,
-            color = function()
-              local colors = {
-                n = '#f38ba8', i = '#a6e3a1', v = '#89b4fa',
-                V = '#89b4fa', ['\22'] = '#89b4fa',
-                c = '#cba6f7', s = '#fab387', S = '#fab387',
-                R = '#f9e2af', t = '#94e2d5',
-              }
-              return { fg = colors[vim.fn.mode()], gui = 'bold' }
-            end,
-            padding = { right = 1 },
-          },
-          -- Filename (bold)
-          { 'filename', color = { gui = 'bold' }, padding = { left = 1, right = 1 } },
-          -- Branch
-          { 'branch', icon = 'bran', color = { gui = 'bold' }, padding = { left = 1, right = 1 } },
-          -- Diagnostics
-          {
-            'diagnostics',
-            sources = { 'nvim_diagnostic' },
-            sections = { 'error', 'warn', 'info', 'hint' },
-            symbols = { error = '!! ', warn = '! ', info = 'i ', hint = '? ' },
-            colored = true,
-            update_in_insert = false,
-            always_visible = false,
-          },
-          -- Center fill
-          { function() return '%=' end },
-          -- LSP name
-          {
-            function()
-              local clients = vim.lsp.get_clients({ bufnr = 0 })
-              if #clients > 0 then
-                return clients[1].name
-              end
-              return ''
-            end,
-            icon = 'LSP',
-            color = { gui = 'bold' },
-            padding = { left = 1, right = 1 },
-          },
-        },
-        lualine_x = {
-          -- Diff
-          {
-            'diff',
-            symbols = { added = '+ ', modified = '~ ', removed = '- ' },
-            colored = true,
-          },
-          -- Filetype
-          {
-            'filetype',
-            padding = { left = 1, right = 1 },
-          },
-          -- Location
-          {
-            'location',
-            padding = { left = 1 },
-          },
-          -- Right accent
-          {
-            function() return '▊' end,
-            color = { fg = '#89b4fa' },
-            padding = { left = 1, right = 0 },
-          },
-        },
-        lualine_y = {},
-        lualine_z = {},
+        lualine_c = { { "filename", path = 1 }, "branch", "diagnostics" },
+        lualine_x = { "diff", "filetype", "location" },
       },
-      inactive_sections = {
-        lualine_a = {},
-        lualine_b = {},
-        lualine_c = { 'filename' },
-        lualine_x = { 'location' },
-        lualine_y = {},
-        lualine_z = {},
-      },
-      winbar = {
-        lualine_c = {
-          { "navic", color_correction = "dynamic" },
-        },
-      },
-    },
-  },
-
-  -- Git: GitHub permalink generation
-  {
-    "linrongbin16/gitlinker.nvim",
-    cmd = "GitLink",
-    opts = {},
-    keys = {
-      { "<leader>u", "<cmd>GitLink<cr>", desc = "GitHub permalink", mode = { "n", "v" } },
     },
   },
 
@@ -635,12 +463,6 @@ require("lazy").setup({
     keys = {
       { "<leader>d", "<cmd>DiffviewOpen<cr>", desc = "Diffview open" },
     },
-  },
-
-  -- Git: full porcelain (:G, :Gdiffsplit, :Gblame, :Gstatus, etc.)
-  {
-    "tpope/vim-fugitive",
-    cmd = { "G", "Git", "Gdiffsplit", "Gblame", "Glog", "Gstatus" },
   },
 
   -- AI assistant (pi.dev)
@@ -660,7 +482,7 @@ require("lazy").setup({
 
 }, {
   install = {
-    colorscheme = { "ayu", "monokai" },
+    colorscheme = { "ayu" },
   },
   checker = {
     enabled = true,
