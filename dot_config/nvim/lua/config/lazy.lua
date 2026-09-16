@@ -63,7 +63,6 @@ require("lazy").setup({
         },
       },
       explorer = { enabled = true },
-      indent = { enabled = true },
       input = { enabled = true },
       picker = { enabled = true },
       notifier = { enabled = true },
@@ -409,6 +408,7 @@ require("lazy").setup({
     "lewis6991/gitsigns.nvim",
     event = { "BufReadPost", "BufNewFile" },
     opts = {
+      current_line_blame = true,
       on_attach = function(bufnr)
         local map = vim.keymap.set
         local opts = { buffer = bufnr, silent = true }
