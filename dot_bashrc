@@ -150,12 +150,14 @@ g() {
 alias h=hax
 alias nivm=nvim
 
-# kubectl
-alias k=kubectl
+# kubectl (kubecolor wraps kubectl for colored output)
+alias k=kubecolor
+source <(kubecolor completion bash)
 complete -o default -F __start_kubectl k
-alias kgp='kubectl get pods'
-alias klf='kubectl logs -f'
-alias keti='kubectl exec -ti'
-alias kaf='kubectl apply -f'
+alias kgp='kubecolor get pods'
+alias klf='kubecolor logs -f'
+alias keti='kubecolor exec -ti'
+alias kaf='kubecolor apply -f'
 alias x=kubectx
 alias ns=kubens
+export KUBECONFIG=$HOME/.kube/config:$HOME/kubeconfigs/dev-ai.yaml:$HOME/kubeconfigs/dev-app.yaml
