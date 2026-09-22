@@ -363,6 +363,13 @@ require("lazy").setup({
     },
   },
 
+  -- Syntax tree / parsers
+  {
+    "nvim-treesitter/nvim-treesitter",
+    build = ":TSUpdate",
+    opts = { ensure_installed = { "yaml", "markdown", "markdown_inline" } },
+  },
+
   -- Code outline sidebar
   {
     "stevearc/aerial.nvim",
@@ -371,7 +378,7 @@ require("lazy").setup({
     },
     lazy = false,
     opts = {
-      backends = { "lsp", "markdown" },
+      backends = { "lsp", "treesitter", "markdown" },
       open_automatic = true,
       show_guides = true,
       layout = {

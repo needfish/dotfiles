@@ -7,27 +7,22 @@ github.credential_command = "gh auth token"
 
 [tools]
 # --- Reproducibility: pin exact versions. Bump deliberately. ---
-node = "26.8.2"
-neovim = "0.12.3"
+node = "26.9.0"
 
 # pnpm via the aqua backend (standalone release binary).
 # NOT `npm:pnpm`: pnpm >=12 ships a native ELF binary that mise's npm-shim
 # imports as JS and crashes with a SyntaxError. aqua fetches the real release.
-"aqua:pnpm/pnpm" = "12.4.1"
+"aqua:pnpm/pnpm" = "12.5.1"
 
 # Global JS CLI tools via mise (instead of `npm i -g ...`), so they are
 # recreated by `mise install` on every machine and survive Node upgrades.
-"npm:@earendil-works/pi-coding-agent" = "0.85.1"
+"npm:@earendil-works/pi-coding-agent" = "0.86.0"
 uv = "latest"
 chezmoi = "latest"
 rust = "latest"
 go = "latest"
-docker-cli = "latest"
-docker-compose = "latest"
-"aqua:k3s-io/k3s" = { version = "latest", os = ["linux"] }
-# Headlamp ships .dmg/.deb assets the github backend can't match; install via
-# brew on macOS, linuxbrew on Linux.
-"github:kubernetes-sigs/headlamp" = { version = "latest", os = ["linux"] }
+"aqua:k3s-io/k3s" = "latest"
+"github:kubernetes-sigs/headlamp" = "latest"
 
 # Formatters and linters for Neovim (conform.nvim, nvim-lint).
 stylua = "latest"
@@ -49,7 +44,7 @@ yq = "latest"
 aws-cli = "latest"
 
 # Shell navigation, Kubernetes helpers, and system inspection.
-broot = { version = "latest", os = ["linux"] }
+broot = "latest"
 ripgrep = "latest"
 fd = "latest"
 fzf = "latest"
@@ -62,9 +57,14 @@ lazygit = "latest"
 stern = "latest"
 kubectx = "latest"
 kubens = "latest"
-lazydocker = "latest"
 direnv = "latest"
 just = "latest"
 dust = "latest"
 duf = "latest"
-btop = { version = "latest", os = ["linux"] }
+btop = "latest"
+sqlite = "latest"
+"github:can1357/oh-my-pi" = "latest"
+k3d = "latest"
+java = "27"
+maven = "3"
+ansible-core = "latest"
