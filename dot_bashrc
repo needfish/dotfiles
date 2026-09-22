@@ -146,7 +146,6 @@ g() {
 
 # pi: no discovery, system prompt from ~/AGENTS.md
 
-export OPENCODE_API_KEY=***REMOVED***
 alias h=hax
 alias nivm=nvim
 
