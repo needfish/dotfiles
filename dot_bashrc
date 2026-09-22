@@ -145,6 +145,7 @@ g() {
 }
 
 # pi: no discovery, system prompt from ~/AGENTS.md
+[ -f ~/.bashrc.local ] && . ~/.bashrc.local
 
 alias h=hax
 alias nivm=nvim
