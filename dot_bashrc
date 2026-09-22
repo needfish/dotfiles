@@ -161,3 +161,4 @@ alias kaf='kubecolor apply -f'
 alias x=kubectx
 alias ns=kubens
 export KUBECONFIG=$HOME/.kube/config:$HOME/kubeconfigs/dev-ai.yaml:$HOME/kubeconfigs/dev-app.yaml
+source <(npm completion)
