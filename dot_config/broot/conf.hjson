@@ -38,7 +38,7 @@ default_editor: nvim
 # the examples below and tuning it to your taste.
 #
 # terminal_title: "[broot] {git-name}"
-# terminal_title: "{file} 🐄"
+terminal_title: "{file}"
 # terminal_title: "-= {file-name} =-"
 # reset_terminal_title_on_exit: false
 

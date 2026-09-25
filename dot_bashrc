@@ -136,12 +136,11 @@ f() {
     "$EDITOR" "$file"
 }
 g() {
-  local x file line
-  x=$(rg -n --hidden -g '!.git' --no-heading "${*:-.}" | fzf --delimiter : --preview 'bat --color=always --highlight-line {2} {1}' --preview-window '+{2}-/2') || return
-  file=${x%%:*}
-  line=${x#*:}
-  line=${line%%:*}
-  "$EDITOR" "+$line" "$file"
+  rg -n --hidden -g '!.git' --no-heading "${*:-.}" |
+    fzf --delimiter : \
+        --preview 'bat --color=always --highlight-line {2} {1}' \
+        --preview-window '+{2}-/2' \
+        --bind "enter:execute($EDITOR +{2} {1})"
 }
 
 # pi: no discovery, system prompt from ~/AGENTS.md
