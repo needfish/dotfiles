@@ -367,7 +367,17 @@ require("lazy").setup({
   {
     "nvim-treesitter/nvim-treesitter",
     build = ":TSUpdate",
-    opts = { ensure_installed = { "yaml", "markdown", "markdown_inline" } },
+    opts = { ensure_installed = { "yaml", "markdown", "markdown_inline", "hcl", "terraform" } },
+  },
+
+  -- Bracket matching: highlighted pairs + odd-bracket detection
+  {
+    "andymass/vim-matchup",
+    event = { "BufReadPost", "BufNewFile" },
+    init = function()
+      vim.g.matchup_matchparen_enabled = 1
+      vim.g.matchup_matchparen_offscreen = { method = "popup" }
+    end,
   },
 
   -- Code outline sidebar

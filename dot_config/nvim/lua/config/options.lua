@@ -61,8 +61,9 @@ opt.mouse = "a"
 opt.list = true
 opt.listchars = { tab = "> ", trail = "-", precedes = "<", extends = ">" }
 
--- Don't wrap long lines by default
-opt.wrap = false
+-- Wrap long lines by default
+opt.wrap = true
+opt.linebreak = true
 opt.breakindent = true
 
 -- No ~ characters on empty lines (cleaner look)

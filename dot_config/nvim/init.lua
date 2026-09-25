@@ -7,6 +7,10 @@
 require("config.options")
 require("config.keymaps")
 
+-- Show current file in terminal tab title
+vim.opt.title = true
+vim.opt.titlestring = "%t"
+
 -- Disable automatic newline comment continuation
 local augroup = vim.api.nvim_create_augroup("erock.cfg", { clear = true })
 vim.api.nvim_create_autocmd("BufEnter", {
