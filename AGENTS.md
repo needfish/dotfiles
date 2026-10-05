@@ -8,7 +8,7 @@
   - [REPORT] for task outcomes,
   - [OUTPUT] for program output,
   - [INFORMATION] for lists of items the user might want,
-  - and [ASK_USER] for choices, user input, information to check, or actions to take.
+  - and [SUGGESTION] for choices, user input, information to check, or actions to take.
 - Use bold run-in inline headings for specific topics, in the style of research papers.
 - Avoid extreme wording (e.g every, all, no). avoid dramatic wording entirely.
 
