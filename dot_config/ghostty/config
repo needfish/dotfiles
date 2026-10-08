@@ -1,0 +1,6 @@
+font-family = Kitan Mono T
+font-size = 13
+
+freetype-load-flags = no-hinting
+
+theme = GitHub Light High Contrast
