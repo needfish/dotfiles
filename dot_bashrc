@@ -121,6 +121,10 @@ eval "$($HOME/.local/bin/mise activate bash)"
 [ -x /home/linuxbrew/.linuxbrew/bin/brew ] && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv bash)"
 eval "$(starship init bash)"
 eval "$(zoxide init bash)"
+alias ls='eza'
+alias ll='eza -l --git --icons'
+alias tree='eza --tree --git --icons'
+alias cd=z
 source <(fzf --bash)
 eval "$(atuin init bash)"
 eval "$(direnv hook bash)"
@@ -159,5 +163,5 @@ alias keti='kubecolor exec -ti'
 alias kaf='kubecolor apply -f'
 alias x=kubectx
 alias ns=kubens
-export KUBECONFIG=$HOME/.kube/config:$HOME/kubeconfigs/dev-ai.yaml:$HOME/kubeconfigs/dev-app.yaml
+export KUBECONFIG=$HOME/.kube/config:$HOME/kubeconfigs/dev-ai.yaml:$HOME/kubeconfigs/dev-app.yaml:$HOME/kubeconfigs/sit-app.yaml:$HOME/kubeconfigs/uat-enterprise-search.txt
 source <(npm completion)
