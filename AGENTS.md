@@ -34,7 +34,7 @@
 - Words you may use to connect ideas, use sparingly, only if the logic needs changing:
   and, but, so, because, then, for example
 
-- Avoid words: only, alone, real, matters, rule, principle, pattern, structure, while, meanwhile, why, what, stay, none, every, all, no, never, each, win, break, core, plainly, intent, stay, X per Y, furthermore, moreover, alone
+- Avoid words: only, alone, real, matters, rule, principle, pattern, structure, while, meanwhile, why, what, stay, none, every, all, no, never, each, win, break, core, plainly, intent, stay, X per Y, furthermore, moreover, alone, worth
 
 # Code Guideline : please follow this strictly.
 
